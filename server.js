@@ -26,33 +26,24 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // name of model should be pascalcase. If we have a big file, should take this out and make a file just for that.
-const User = mongoose.model("User", {
-  name: String,
-  age: Number,
-});
-
-const newUser = new User({
-  name: "Sofiap",
-  age: 28,
-});
-
-const newUser2 = new User({
-  name: "Fredrik",
-  age: 31,
-});
-
-const newUser3 = new User({
-  name: "Nelson",
-  age: 1,
+const Company = mongoose.model("Company", {
+  index: Number,
+  company: String,
+  website: String,
+  region: String,
+  vertical: String,
+  funding_amount: Number,
+  funding_stage: String,
+  funding_date: String,
 });
 
 if (process.env.RESET_DB) {
   // deleteMany is from mongoose. Be careful with this - delete will remove everything. Should only be done while setting things up. Later, maybe people will add their info, and it might not be saved somewhere else.
   const seedDatabase = async () => {
-    await User.deleteMany({});
-    newUser.save();
-    newUser2.save();
-    newUser3.save();
+    await Company.deleteMany({});
+    techFunding.forEach((company) => {
+      new Company(company).save();
+    });
   };
   seedDatabase();
 }
